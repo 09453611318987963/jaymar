@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Dog Image Generator</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px auto;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 3px solid #ddd;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+       
+        img[hidden] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Random Dog Image Generator</h1>
+    <p>Click the button below to fetch a random dog image.</p>
+    <button id="fetchButton">Get Random Dog</button>
+    <div id="imageContainer">
+        <img id="dogImage" src="" alt="Click the button to load a dog image!" hidden>
+    </div>
+
+    <script>
+      
+        const fetchButton = document.getElementById("fetchButton");
+        const dogImage = document.getElementById("dogImage");
+
+        
+        fetchButton.addEventListener("click", fetchRandomDog);
+
+        
+        function fetchRandomDog() {
+            
+            const apiUrl = 'https://dog.ceo/api/breeds/image/random';
+
+           
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    
+                    dogImage.src = data.message;
+                    dogImage.alt = "A random dog image";
+                    dogImage.hidden = false;  
+                })
+                .catch(error => {
+                    console.error("Error fetching the dog image:", error);
+                    alert("Failed to fetch a dog image. Please try again later.");
+                });
+        }
+    </script>
+</body>
+</html>
